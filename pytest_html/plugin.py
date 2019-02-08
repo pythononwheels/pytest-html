@@ -58,6 +58,8 @@ def pytest_addoption(parser):
                     'https://developer.mozilla.org/docs/Web/Security/CSP)')
     group.addoption('--css', action='append', metavar='path', default=[],
                     help='append given css file content to report style file.')
+    group.addoption('--asset-path', action='append', metavar='assets-path', default="assets",
+                    help='append given css file content to report style file.')
 
 
 def pytest_configure(config):
@@ -337,7 +339,7 @@ class HTMLReport(object):
             with open(path, 'r') as f:
                 self.style_css += f.read()
 
-        css_href = '{0}/{1}'.format('assets', 'style.css')
+        css_href = '{0}/{1}'.format(self.config.getoption('assets-path'), 'style.css')
         html_css = html.link(href=css_href, rel='stylesheet',
                              type='text/css')
         if self.self_contained:
